@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "medicurevault",
+  "compatibility_date": "2026-09-21",
+  "routes": [
+    { "pattern": "medicorevault.com", "custom_domain": true },
+    { "pattern": "www.medicorevault.com", "custom_domain": true }
+  ],
+  "assets": {
+    "not_found_handling": "single-page-application"
+  }
+}
