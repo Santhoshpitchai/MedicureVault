@@ -393,7 +393,7 @@ app.get('/', (req, res) => {
 
 // Serve React app for all non-API routes if static build exists
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
+  app.get('(.*)', (req, res) => {
     const indexPath = path.join(__dirname, '../dist', 'index.html');
     if (fs.existsSync(indexPath)) {
       res.sendFile(indexPath);
