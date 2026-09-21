@@ -3,8 +3,8 @@
   "name": "medicurevault",
   "compatibility_date": "2026-09-21",
   "routes": [
-    { "pattern": "medicorevault.com", "custom_domain": true },
-    { "pattern": "www.medicorevault.com", "custom_domain": true }
+    "medicorevault.com/*",
+    "www.medicorevault.com/*"
   ],
   "assets": {
     "not_found_handling": "single-page-application"
