@@ -391,17 +391,15 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'MedicoReVault API Server is running' });
 });
 
-// Serve React app for all non-API routes if static build exists
-if (process.env.NODE_ENV === 'production') {
-  app.get('(.*)', (req, res) => {
-    const indexPath = path.join(__dirname, '../dist', 'index.html');
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
-    } else {
-      res.json({ status: 'ok', message: 'MedicoReVault API Server is running' });
-    }
-  });
-}
+// Fallback handler for all other routes (avoids path-to-regexp parsing completely)
+app.use((req, res) => {
+  const indexPath = path.join(__dirname, '../dist', 'index.html');
+  if (process.env.NODE_ENV === 'production' && fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.json({ status: 'ok', message: 'MedicoReVault API Server is running' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Backend server running on port ${PORT}`);
