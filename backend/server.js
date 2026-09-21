@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const fs = require('fs');
 const { FAQ, Module, Feature, Testimonial, Partner, DemoRequest, User, Hospital, PatientRecord } = require('./models');
 const { handleIncomingMessage } = require('./chatbot');
 
@@ -385,13 +386,23 @@ app.post('/webhook', async (req, res) => {
   }
 });
 
-// Serve React app for all non-API routes (IMPORTANT: This must be last!)
+// Health check endpoint for deployment services (Render, Railway, etc.)
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'MedicoReVault API Server is running' });
+});
+
+// Serve React app for all non-API routes if static build exists
 if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+    const indexPath = path.join(__dirname, '../dist', 'index.html');
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.json({ status: 'ok', message: 'MedicoReVault API Server is running' });
+    }
   });
 }
 
 app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+  console.log(`Backend server running on port ${PORT}`);
 });
